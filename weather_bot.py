@@ -27,9 +27,12 @@ async def on_message(message):
 
         try:
             weather_data = get_weather(city, os.getenv('WEATHER_API_KEY'))
+            name = weather_data['location']['name']
+            country = weather_data['location']['country']
+
             description = weather_data['current']['condition']['text']
             temperature = weather_data['current']['temp_c']
-            await message.channel.send(f"Weather in {city}: {description}, {temperature}°C")
+            await message.channel.send(f"Weather in {name}, {country}: {description}, {temperature}°C")
         except KeyError:
             await message.channel.send("Could not find weather data for this city.")
         except Exception as e:
