@@ -7,7 +7,7 @@ class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='weather')
+    @commands.command(name='weather', aliases=['w'], description='Get the current weather for a city')
     async def weather(self, ctx, *, city: str):
         try:
             weather_data = get_weather(city, os.getenv('WEATHER_API_KEY'))
@@ -22,7 +22,7 @@ class Weather(commands.Cog):
             await ctx.send("An error occurred.")
             print(e)  # Log the error to console for debugging
 
-    @commands.command(name='forecast')
+    @commands.command(name='forecast', aliases=['fc'], description='Get the weather forecast for a city')
     async def forecast(self, ctx, *, city: str):
         try:
             forecast_data = get_forecast(city, os.getenv('WEATHER_API_KEY'))
@@ -43,7 +43,7 @@ class Weather(commands.Cog):
             await ctx.send("An error occurred.")
             print(e)  # Log the error to console for debugging
 
-    @commands.command(name='alerts')
+    @commands.command(name='alerts', aliases=['al'], description='Get weather alerts for a city')
     async def alerts(self, ctx, *, city: str):
         try:
             alerts_data = get_alerts(city, os.getenv('WEATHER_API_KEY'))
