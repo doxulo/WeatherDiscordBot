@@ -16,11 +16,17 @@ bot = commands.Bot(command_prefix='$', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user}')
 
-# Load cogs
-@bot.event
-async def setup_hook():
+async def load_extensions():
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
-            await bot.load_extension(f'cogs.{filename[:-3]}')
+            try:
+                await bot.load_extension(f'cogs.{filename[:-3]}')
+                print(f"Loaded cog: cogs.{filename[:-3]}")
+            except Exception as e:
+                print(f"Failed to load cog cogs.{filename[:-3]}: {e}")
+
+@bot.event
+async def setup_hook():
+    await load_extensions()
 
 bot.run(os.getenv('DISCORD_BOT_TOKEN'))

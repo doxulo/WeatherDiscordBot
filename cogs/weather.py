@@ -5,7 +5,6 @@ from weather_api import get_weather
 class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        print("Weather cog loaded")
 
     @commands.command(name='weather')
     async def weather(self, ctx, *, city: str):
