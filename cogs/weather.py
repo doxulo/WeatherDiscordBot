@@ -5,6 +5,7 @@ from weather_api import get_weather
 class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        print("Weather cog loaded")
 
     @commands.command(name='weather')
     async def weather(self, ctx, *, city: str):
@@ -22,5 +23,5 @@ class Weather(commands.Cog):
             await ctx.send("An error occurred.")
             print(e)  # Log the error to console for debugging
 
-def setup(bot):
-    bot.add_cog(Weather(bot))
+async def setup(bot):
+    await bot.add_cog(Weather(bot))
