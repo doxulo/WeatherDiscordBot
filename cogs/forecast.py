@@ -1,6 +1,7 @@
 from discord.ext import commands
 import os
 from weather_api import get_forecast
+from .utils import get_location_string
 
 class Forecast(commands.Cog):
     def __init__(self, bot):
@@ -10,10 +11,9 @@ class Forecast(commands.Cog):
     async def forecast(self, ctx, *, city: str):
         try:
             forecast_data = get_forecast(city, os.getenv('WEATHER_API_KEY'))
-            name = forecast_data['location']['name']
-            country = forecast_data['location']['country']
+            location_string = get_location_string(forecast_data)
 
-            forecast_message = f"Weather forecast for {name}, {country}:\n"
+            forecast_message = f"Weather forecast for {location_string}:\n"
             for day in forecast_data['forecast']['forecastday']:
                 date = day['date']
                 condition = day['day']['condition']['text']
