@@ -71,5 +71,25 @@ class Weather(commands.Cog):
             await ctx.send("An error occurred.")
             print(e)  # Log the error to console for debugging
 
+    @commands.command(name='hourly', aliases=['h'], description='Get the hourly weather forecast for a city')
+    async def hourly(self, ctx, *, city: str):
+        try:
+            hourly_data = get_hourly_forecast(city, os.getenv('WEATHER_API_KEY'))
+            location_string = get_location_string(hourly_data)
+
+            hourly_message = f"Hourly weather forecast for {location_string}:\n"
+            for hour in hourly_data['forecast']['forecastday'][0]['hour']:
+                time = hour['time']
+                condition = hour['condition']['text']
+                temp = hour['temp_c']
+                hourly_message += f"{time}: {condition}, {temp}°C\n"
+
+            await ctx.send(hourly_message)
+        except KeyError:
+            await ctx.send("Could not find hourly forecast data for this city.")
+        except Exception as e:
+            await ctx.send("An error occurred.")
+            print(e)  # Log the error to console for debugging
+
 async def setup(bot):
     await bot.add_cog(Weather(bot))
