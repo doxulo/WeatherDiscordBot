@@ -1,7 +1,18 @@
 from discord.ext import commands
 import os
+import json
 from weather_api import *
 from .utils import get_location_string
+
+# Load weather conditions from JSON file
+with open('./data/weather_conditions.json') as f:
+    weather_conditions = json.load(f)
+
+def get_weather_icon(condition_code):
+    for condition in weather_conditions:
+        if condition['code'] == condition_code:
+            return condition['icon']
+    return None
 
 class Weather(commands.Cog):
     def __init__(self, bot):
@@ -14,6 +25,8 @@ class Weather(commands.Cog):
             location_string = get_location_string(weather_data)
             description = weather_data['current']['condition']['text']
             temperature = weather_data['current']['temp_c']
+            condition_code = weather_data['current']['condition']['code']
+            icon = get_weather_icon(condition_code)
 
             await ctx.send(f"Weather in {location_string}: {description}, {temperature}°C")
         except KeyError:
@@ -34,6 +47,8 @@ class Weather(commands.Cog):
                 condition = day['day']['condition']['text']
                 max_temp = day['day']['maxtemp_c']
                 min_temp = day['day']['mintemp_c']
+                condition_code = day['day']['condition']['code']
+                icon = get_weather_icon(condition_code)
                 forecast_message += f"{date}: {condition}, {min_temp}°C - {max_temp}°C\n"
 
             await ctx.send(forecast_message)
@@ -82,6 +97,8 @@ class Weather(commands.Cog):
                 time = hour['time']
                 condition = hour['condition']['text']
                 temp = hour['temp_c']
+                condition_code = hour['condition']['code']
+                icon = get_weather_icon(condition_code)
                 hourly_message += f"{time}: {condition}, {temp}°C\n"
 
             await ctx.send(hourly_message)
