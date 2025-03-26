@@ -21,7 +21,10 @@ async def on_ready():
 @bot.command(name='guilds', help='Get a list of guilds the bot is in')
 @commands.is_owner()
 async def guilds(ctx):
-    guild_list = '\n'.join([f"{guild.name} (ID: {guild.id})" for guild in bot.guilds])
+    guild_list = '\n'.join([
+        f"{guild.name} (ID: {guild.id})"
+        for guild in bot.guilds
+    ])
     await ctx.send(f"The bot is in the following guilds:\n{guild_list}")
 
 @bot.event
@@ -49,4 +52,8 @@ async def changeprefix(ctx, prefix):
 
     await ctx.send(f'Prefix changed to: {prefix}')
 
-bot.run(os.getenv('DISCORD_BOT_TOKEN'))
+token = os.getenv('DISCORD_BOT_TOKEN')
+if token:
+    bot.run(token)
+else:
+    print("DISCORD_BOT_TOKEN not found in environment variables")
