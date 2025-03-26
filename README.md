@@ -48,7 +48,7 @@ This is a simple Discord bot that provides weather information based on user que
 3. **Install dependencies:**
 
     ```bash
-    pip install discord.py python-dotenv requests
+    pip install -r requirements.txt
     ```
 
 4. **Create a `.env` file:**
