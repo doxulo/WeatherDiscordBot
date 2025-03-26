@@ -3,3 +3,4 @@ venv/
 .idea/
 __pycache__/
 data/server_prefixes.json
+.vscode/
